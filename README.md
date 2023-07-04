@@ -6,7 +6,7 @@
 
 ## Agradecimento
 
-😊 Em primeiro lugar, gostaria de agradecer a oportunidade e dizer que é uma grande honra para mim, ter sido selecionado para fazer o processo seletivo da Coodsh. Então vamos nessa!!!!
+😊 Em primeiro lugar, gostaria de agradecer a oportunidade e dizer que é uma grande honra para mim, ter sido selecionado para fazer o processo seletivo da Coodesh. Então vamos nessa!!!!
 
 
 ## Desafio
