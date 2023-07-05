@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:desafio_coodesh/app/modules/core/failure.dart';
-import 'package:desafio_coodesh/app/modules/home/domain/repository/words_repository.dart';
+import 'package:desafio_coodesh/app/modules/home/domain/repository/home_repository.dart';
 
 @Injectable()
 class ListWordsUseCase {

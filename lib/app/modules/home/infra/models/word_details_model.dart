@@ -1,9 +1,9 @@
 class WordDetailsModel {
   final String word;
-  final List<Definition> results;
+  final double frequency;
   final Syllables syllables;
   final Pronunciation pronunciation;
-  final double frequency;
+  final List<Definition> results;
 
   WordDetailsModel({
     required this.word,

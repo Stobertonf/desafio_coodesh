@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_modular/flutter_modular.dart';
 
+@Injectable()
 abstract class WordsApiRepository {
   Future<Map<String, dynamic>> getWordDetails(String word);
 }
 
-class WordsApiRepositoryImpl implements WordsApiRepository {
+class HomeRepositoryImpl implements WordsApiRepository {
   final String baseUrl = "https://wordsapiv1.p.mashape.com/words";
 
   @override

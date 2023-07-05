@@ -1,19 +1,20 @@
+import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:desafio_coodesh/app/modules/core/failure.dart';
 import 'package:desafio_coodesh/app/modules/home/infra/models/word_details_model.dart';
-import 'package:desafio_coodesh/app/modules/home/domain/repository/words_repository.dart';
+import 'package:desafio_coodesh/app/modules/home/domain/repository/home_repository.dart';
 import 'package:desafio_coodesh/app/modules/home/domain/usercases/save_word_usercase.dart';
 
 @Injectable()
 class HomeController extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
 
+  WordDetailsModel? _wordDetails;
   TextEditingController? textHelpController;
   late final IWordsRepository wordsRepository;
   late final SaveWordsUseCase saveWordsUseCase;
-  WordDetailsModel? _wordDetails;
 
   HomeController(
     this.saveWordsUseCase,
@@ -35,24 +36,15 @@ class HomeController extends ChangeNotifier {
       frequency: frequency,
     );
 
-    try {
-      Future<Either<Failure, String>> retorno = result.fold((l) async {
-        return Left(l);
-      }, (r) async {
-        return Right(r);
-      });
-      return retorno;
-    } catch (e) {
-      rethrow;
-    }
+    return result;
   }
 
-  Future<void> getWordDetails({
+  Future<WordDetailsModel?> getWordDetails({
     required String word,
-    String results = "",
-    String syllables = "",
-    String pronunciation = "",
-    String frequency = "",
+    required String results,
+    required String syllables,
+    required String pronunciation,
+    required String frequency,
   }) async {
     final result = await saveWordsUseCase.call(
       word: word,
@@ -62,14 +54,13 @@ class HomeController extends ChangeNotifier {
       frequency: frequency,
     );
 
-    result.fold(
+    return result.fold(
       (failure) {
         print("Falha ao capturar palavra: $failure");
+        return null;
       },
-      (wordDetails) {
-        _wordDetails = wordDetails;
-        notifyListeners();
-      },
+      (wordDetails) =>
+          Future.value(wordDetails as FutureOr<WordDetailsModel?>?),
     );
   }
 
@@ -84,4 +75,6 @@ class HomeController extends ChangeNotifier {
     }
     return null;
   }
+
+  WordDetailsModel? get wordDetails => _wordDetails;
 }

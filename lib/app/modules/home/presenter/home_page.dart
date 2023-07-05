@@ -6,9 +6,10 @@ import 'package:desafio_coodesh/app/modules/home/presenter/controller/home_contr
 class HomePage extends StatelessWidget {
   final String word;
 
-  const HomePage({Key? key, required this.word}) : super(key: key);
-
-  
+  const HomePage({Key? key, required this.word})
+      : super(
+          key: key,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +24,22 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Word Details",
-        ),
+        title: const Text("Word Details"),
       ),
       body: Center(
-        child: FutureBuilder<WordDetailsModel>(
-          future: controller.wordDetails,
+        child: FutureBuilder<WordDetailsModel?>(
+          future: controller.getWordDetails(
+            word: word,
+            results: "",
+            syllables: "",
+            pronunciation: "",
+            frequency: "",
+          ),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
-              return Text("Error: ${snapshot.error}");
+              return Text("Error: ${snapshot.error ?? 'Unknown error'}");
             } else if (snapshot.hasData) {
               final wordDetails = snapshot.data!;
 
