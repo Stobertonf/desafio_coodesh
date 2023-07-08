@@ -5,7 +5,7 @@ import 'package:desafio_coodesh/app/modules/home/domain/repository/home_reposito
 
 @Injectable()
 class SaveWordsUseCase {
-  final IWordsRepository repository;
+  final HomeRepository repository;
 
   SaveWordsUseCase(this.repository);
 

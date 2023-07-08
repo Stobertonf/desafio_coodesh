@@ -70,7 +70,9 @@ class Syllables {
   factory Syllables.fromJson(Map<String, dynamic> json) {
     return Syllables(
       count: json['count'],
-      list: List<String>.from(json['list']),
+      list: List<String>.from(
+        json['list'],
+      ),
     );
   }
 }

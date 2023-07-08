@@ -6,7 +6,7 @@ import 'package:desafio_coodesh/app/modules/home/domain/repository/home_reposito
 @Injectable()
 class ListWordsUseCase {
   ListWordsUseCase(this.repository);
-  final IWordsRepository repository;
+  final HomeRepository repository;
 
   Future<Either<Failure, String>> call({
     required String word,
