@@ -16,40 +16,101 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Word Details"),
       ),
-      body: Center(
-        child: FutureBuilder<List<String>>(
-          future: controller.getWordDetails(
-            word: word,
-            results: "",
-            syllables: "",
-            pronunciation: "",
-            frequency: "",
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  controller.setSelectedOption(
+                    'Word List',
+                  );
+                },
+                child: const Text(
+                  'Word List',
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  controller.setSelectedOption(
+                    'History',
+                  );
+                },
+                child: const Text(
+                  'History',
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  controller.setSelectedOption(
+                    'Favorites',
+                  );
+                },
+                child: const Text(
+                  'Favorites',
+                ),
+              ),
+            ],
           ),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text("Error: ${snapshot.error ?? 'Unknown error'}");
-            } else if (snapshot.hasData) {
-              final wordList = snapshot.data!;
-              if (wordList.isEmpty) {
-                return const Text("No data");
-              } else {
-                return ListView.builder(
-                  itemCount: wordList.length,
-                  itemBuilder: (context, index) {
-                    final word = wordList[index];
-                    return ListTile(
-                      title: Text(word),
+          const SizedBox(
+            height: 16,
+          ),
+          Text(
+            controller.selectedOption ?? '',
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Expanded(
+            child: FutureBuilder<List<String>>(
+              future: controller.getWordDetails(
+                word: '',
+                results: '',
+                syllables: '',
+                pronunciation: '',
+                frequency: '',
+              ),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text(
+                    "Error: ${snapshot.error ?? 'Unknown error'}",
+                  );
+                } else if (snapshot.hasData) {
+                  final wordList = snapshot.data!;
+                  if (wordList.isEmpty) {
+                    return const Text(
+                      "No data",
                     );
-                  },
-                );
-              }
-            } else {
-              return const Text("No data");
-            }
-          },
-        ),
+                  } else {
+                    return ListView.builder(
+                      itemCount: wordList.length,
+                      itemBuilder: (context, index) {
+                        final word = wordList[index];
+                        return ListTile(
+                          title: Text(word),
+                        );
+                      },
+                    );
+                  }
+                } else {
+                  return const Text(
+                    "No data",
+                  );
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

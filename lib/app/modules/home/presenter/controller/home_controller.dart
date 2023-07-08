@@ -8,9 +8,10 @@ import 'package:desafio_coodesh/app/modules/home/domain/usercases/save_word_user
 
 @Injectable()
 class HomeController extends ChangeNotifier {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  String? selectedOption;
   final HomeRepository homeRepository;
   final SaveWordsUseCase saveWordsUseCase;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   WordDetailsModel? _wordDetails;
   TextEditingController? textHelpController;
@@ -60,6 +61,11 @@ class HomeController extends ChangeNotifier {
         return wordList;
       },
     );
+  }
+
+  void setSelectedOption(String option) {
+    selectedOption = option;
+    notifyListeners();
   }
 
   String? validateWord(String? value) {
