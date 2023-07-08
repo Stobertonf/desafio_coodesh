@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -9,17 +8,14 @@ import 'package:desafio_coodesh/app/modules/home/domain/usercases/save_word_user
 
 @Injectable()
 class HomeController extends ChangeNotifier {
-  final formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final HomeRepository homeRepository;
+  final SaveWordsUseCase saveWordsUseCase;
 
   WordDetailsModel? _wordDetails;
   TextEditingController? textHelpController;
-  late final IWordsRepository wordsRepository;
-  late final SaveWordsUseCase saveWordsUseCase;
 
-  HomeController(
-    this.saveWordsUseCase,
-    this.wordsRepository,
-  );
+  HomeController(this.saveWordsUseCase, this.homeRepository);
 
   Future<Either<Failure, String>> saveWords({
     required String word,
@@ -39,14 +35,14 @@ class HomeController extends ChangeNotifier {
     return result;
   }
 
-  Future<WordDetailsModel?> getWordDetails({
+  Future<List<String>> getWordDetails({
     required String word,
     required String results,
     required String syllables,
     required String pronunciation,
     required String frequency,
   }) async {
-    final result = await saveWordsUseCase.call(
+    final result = await homeRepository.listWords(
       word: word,
       results: results,
       syllables: syllables,
@@ -57,10 +53,12 @@ class HomeController extends ChangeNotifier {
     return result.fold(
       (failure) {
         print("Falha ao capturar palavra: $failure");
-        return null;
+        return <String>[];
       },
-      (wordDetails) =>
-          Future.value(wordDetails as FutureOr<WordDetailsModel?>?),
+      (data) {
+        final wordList = data.split('\n');
+        return wordList;
+      },
     );
   }
 
